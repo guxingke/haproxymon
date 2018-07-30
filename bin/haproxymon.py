@@ -4,27 +4,15 @@
 
 import os
 import sys
-import toml
-from optparse import OptionParser
+
+HMROOT = '/duitang/dist/opt/haproxymon'
+
+sys.path.insert(0, os.path.join(HMROOT, 'lib'))
+sys.path.insert(0, os.path.join(HMROOT, 'etc'))
+
+from HaproxyStats import HaproxyStats
 
 if __name__ == "__main__":
-	# load lib to sys.path
-	sys.path.append( os.path.dirname(sys.path[0]) + '/lib')
-	from HaproxyStats import HaproxyStats
-
-	# parser cli args
-	parser = OptionParser(version="%prog 1.0")
-	parser.add_option("-f", "--file", dest="filename",  
-                  help="read a configure file", metavar="FILE")  
-	(options, args) = parser.parse_args()
-
-	# parser configue file
-	with open(options.filename) as conffile:
-		SectionName = "haproxy"
-		config = toml.loads(conffile.read())
-		if SectionName not in config:
-			sys.exit("section name do not existed: " + SectionName)
-
-	# upload monitor data to falcon server
-	hs = HaproxyStats(config[SectionName])
-	hs.sendData()
+    from config import hm_conf
+    hs = HaproxyStats(hm_conf)
+    hs.sendData()
