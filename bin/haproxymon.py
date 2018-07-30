@@ -11,8 +11,8 @@ sys.path.insert(0, os.path.join(HMROOT, 'lib'))
 sys.path.insert(0, os.path.join(HMROOT, 'etc'))
 
 from HaproxyStats import HaproxyStats
+from config import hm_conf
 
 if __name__ == "__main__":
-    from config import hm_conf
     hs = HaproxyStats(hm_conf)
     hs.sendData()
